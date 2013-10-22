@@ -136,6 +136,11 @@ A small animation to show the app user that its possible to interact with the Na
 
 	mainWindow.bounceLeftView();
 
+### closeOpenView
+
+`closeOpenView()` closes the open window.
+
+    mainWindow.closeOpenView();
 
 ### isAnyViewOpen
 
@@ -251,6 +256,10 @@ window.open(); //open the app
 ```
 
 ## Changelog
+
+**v1.4.1** 
+
+* Added closeOpenView(). Thanks to @chrisnharvey
 
 **v1.4.0** 
 

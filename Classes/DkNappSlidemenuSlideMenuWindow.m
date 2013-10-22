@@ -148,6 +148,12 @@ UINavigationController * NavigationControllerForViewProxy(TiUIiOSNavWindowProxy 
     [controller toggleOpenView];
 }
 
+-(void)closeOpenView:(id)args
+{
+    ENSURE_UI_THREAD(closeOpenView,args);
+    [controller closeOpenView];
+}
+
 -(NSNumber*)isAnyViewOpen:(id)args
 {
     return [controller isAnySideOpen] ? NUMBOOL(YES) : NUMBOOL(NO);
