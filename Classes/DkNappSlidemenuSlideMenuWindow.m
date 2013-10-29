@@ -62,8 +62,10 @@ UINavigationController * NavigationControllerForViewProxy(TiUIiOSNavWindowProxy 
         float rightLedge = [TiUtils floatValue:[self.proxy valueForUndefinedKey:@"rightLedge"] def:65];
         float leftLedge = [TiUtils floatValue:[self.proxy valueForUndefinedKey:@"leftLedge"] def:65];
 
-        if(leftWindow != nil){
-            if(rightWindow != nil){
+        if(leftWindow != nil && ![leftWindow isKindOfClass:[NSNull class]]){
+            NSLog(@"leftWindow : %@", leftWindow);
+            if(rightWindow != nil && ![rightWindow isKindOfClass:[NSNull class]]){
+                NSLog(@"rightWindow : %@", rightWindow);
                 //both left and right
                 controller =  [[IIViewDeckController alloc] initWithCenterViewController: centerWindow
                                                                       leftViewController:ControllerForViewProxy(leftWindow)
@@ -73,14 +75,14 @@ UINavigationController * NavigationControllerForViewProxy(TiUIiOSNavWindowProxy 
                 controller =  [[IIViewDeckController alloc] initWithCenterViewController:centerWindow
                                                                       leftViewController:ControllerForViewProxy(leftWindow)];
             }
-        } else if(rightWindow != nil){
+        } else if(rightWindow != nil && ![rightWindow isKindOfClass:[NSNull class]]){
+            NSLog(@"rightWindow : %@", rightWindow);
             //right only
             controller =  [[IIViewDeckController alloc] initWithCenterViewController:centerWindow
                                                                  rightViewController:ControllerForViewProxy(rightWindow) ];
         } else {
-            //error
-            NSLog(@"[ERROR] NappSlideMenu: No windows assigned");
-            return nil;
+            //center only
+            controller =  [[IIViewDeckController alloc] initWithCenterViewController:centerWindow];
         }
         
         //setting the ledge
@@ -225,15 +227,29 @@ UINavigationController * NavigationControllerForViewProxy(TiUIiOSNavWindowProxy 
 -(void)setLeftWindow_:(id)args
 {
 	ENSURE_UI_THREAD(setLeftWindow_, args);
-	ENSURE_SINGLE_ARG(args, TiViewProxy);
-	[controller setLeftController:ControllerForViewProxy(args)];
+	ENSURE_SINGLE_ARG_OR_NIL(args, TiViewProxy);
+    if(args == nil){
+        NSLog(@"setLeftWindow_ NIL");
+        [controller closeLeftViewAnimated:NO];
+        [controller setLeftController:nil];
+    }else{
+        NSLog(@"setLeftWindow_ NOT NIL");
+        [controller setLeftController:ControllerForViewProxy(args)];
+    }
 }
 
 -(void)setRightWindow_:(id)args
 {
 	ENSURE_UI_THREAD(setRightWindow_, args);
-	ENSURE_SINGLE_ARG(args, TiViewProxy);
-	[controller setRightController:ControllerForViewProxy(args)];
+	ENSURE_SINGLE_ARG_OR_NIL(args, TiViewProxy);
+    if(args == nil){
+        NSLog(@"setRightWindow_ NIL");
+        [controller closeRightViewAnimated:NO];
+        [controller setRightController:nil];
+    }else{
+        NSLog(@"setRightWindow_ NOT NIL");
+        [controller setRightController:ControllerForViewProxy(args)];
+    }
 }
 
 -(void)setLeftLedge_:(id)args

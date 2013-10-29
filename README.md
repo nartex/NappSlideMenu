@@ -257,6 +257,11 @@ window.open(); //open the app
 
 ## Changelog
 
+**v1.4.2** 
+
+* Ability to create the SlideMenu with centerWindow only.
+* Ability to dynamically remove the left or right menu by setting leftWindow or rightWindow as null
+
 **v1.4.1** 
 
 * Added closeOpenView(). Thanks to @chrisnharvey
